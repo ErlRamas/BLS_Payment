@@ -120,65 +120,66 @@
             }
         }
 
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
-        }
+         
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
 
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            margin: 5% auto;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      margin: 5% auto;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
 
-        .modal-header {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    .modal-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-        .modal-body {
-            margin-bottom: 20px;
-        }
+    .modal-body {
+      margin-bottom: 20px;
+    }
 
-        .modal-footer {
-            text-align: right;
-        }
+    .modal-footer {
+      text-align: right;
+    }
 
-        .btn-modal {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    .btn-modal {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-        .btn-cancel {
-            background-color: #dc3545;
-        }
+    .btn-cancel {
+      background-color: #dc3545;
+    }
 
-        .btn-modal:hover {
-            background-color: #0056b3;
-        }
+    .btn-modal:hover {
+      background-color: #0056b3;
+    }
 
-        .btn-cancel:hover {
-            background-color: #c82333;
-        }
+    .btn-cancel:hover {
+      background-color: #c82333;
+    }
     </style>
 </head>
 
@@ -237,70 +238,92 @@
     </div>
 
     <!-- Modal for Delete Confirmation -->
-    <div id="deleteConfirmModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Confirm Deletion</div>
-            <div class="modal-body">
-                <p>Please enter the passcode to confirm deletion:</p>
-                <input type="password" id="deletePasscode" placeholder="Enter passcode" />
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal" id="btnConfirmDelete">Confirm</button>
-                <button class="btn-cancel" id="btnCancelDelete">Cancel</button>
-            </div>
-        </div>
+  <div id="deleteConfirmModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Confirm Deletion</div>
+      <div class="modal-body">
+        <p>Please enter the passcode to confirm deletion:</p>
+        <input type="password" id="deletePasscode" placeholder="Enter passcode" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal" id="btnConfirmDelete">Confirm</button>
+        <button class="btn-cancel" id="btnCancelDelete">Cancel</button>
+      </div>
     </div>
-    <!-- Modal for Alerts -->
-    <div id="modalAlert" class="modal">
-        <div class="modal-content">
-            <div class="modal-header" id="modalHeader"></div>
-            <div class="modal-body" id="modalMessage"></div>
-            <div class="modal-footer">
-                <button class="btn-modal" id="btnModalOk">OK</button>
-            </div>
-        </div>
+  </div>
+
+  <!-- Modal for Alerts -->
+  <div id="modalAlert" class="modal">
+    <div class="modal-content">
+      <div class="modal-header" id="modalHeader"></div>
+      <div class="modal-body" id="modalMessage"></div>
+      <div class="modal-footer">
+        <button class="btn-modal" id="btnModalOk">OK</button>
+      </div>
     </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script>
-        const form = document.getElementById('blsForm');
-        const listContainer = document.getElementById('listContainer');
-        const entryTable = document.getElementById('entryTable');
-        let entries = JSON.parse(localStorage.getItem('blsEntries')) || [];
+  <!-- Modal for Entry Submission Passcode -->
+  <div id="entryPasscodeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Enter Passcode</div>
+      <div class="modal-body">
+        <p>Please enter the passcode to submit the entry:</p>
+        <input type="password" id="entryPasscode" placeholder="Enter passcode" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal" id="btnSubmitEntry">Submit</button>
+        <button class="btn-cancel" id="btnCancelEntry">Cancel</button>
+      </div>
+    </div>
+  </div>
 
-        const modalAlert = document.getElementById('modalAlert');
-        const modalHeader = document.getElementById('modalHeader');
-        const modalMessage = document.getElementById('modalMessage');
-        const btnModalOk = document.getElementById('btnModalOk');
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    const form = document.getElementById('blsForm');
+    const listContainer = document.getElementById('listContainer');
+    const entryTable = document.getElementById('entryTable');
+    let entries = JSON.parse(localStorage.getItem('blsEntries')) || [];
 
-        // Delete Confirmation Modal
-        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-        const deletePasscodeInput = document.getElementById('deletePasscode');
-        const btnConfirmDelete = document.getElementById('btnConfirmDelete');
-        const btnCancelDelete = document.getElementById('btnCancelDelete');
+    const modalAlert = document.getElementById('modalAlert');
+    const modalHeader = document.getElementById('modalHeader');
+    const modalMessage = document.getElementById('modalMessage');
+    const btnModalOk = document.getElementById('btnModalOk');
 
-        let entryToDelete = null;
+    // Delete Confirmation Modal
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    const deletePasscodeInput = document.getElementById('deletePasscode');
+    const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+    const btnCancelDelete = document.getElementById('btnCancelDelete');
 
-        function toggleView(view) {
-            if (view === 'list') {
-                form.style.display = 'none';
-                listContainer.style.display = 'block';
-                renderTable();
-            } else {
-                form.style.display = 'block';
-                listContainer.style.display = 'none';
-            }
-        }
+    // Entry Submission Passcode Modal
+    const entryPasscodeModal = document.getElementById('entryPasscodeModal');
+    const entryPasscodeInput = document.getElementById('entryPasscode');
+    const btnSubmitEntry = document.getElementById('btnSubmitEntry');
+    const btnCancelEntry = document.getElementById('btnCancelEntry');
 
-        function saveEntries() {
-            localStorage.setItem('blsEntries', JSON.stringify(entries));
-        }
+    let entryToDelete = null;
 
-        function renderTable() {
-            entryTable.innerHTML = '';
-            entries.forEach((entry, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
+    function toggleView(view) {
+      if (view === 'list') {
+        form.style.display = 'none';
+        listContainer.style.display = 'block';
+        renderTable();
+      } else {
+        form.style.display = 'block';
+        listContainer.style.display = 'none';
+      }
+    }
+
+    function saveEntries() {
+      localStorage.setItem('blsEntries', JSON.stringify(entries));
+    }
+
+    function renderTable() {
+      entryTable.innerHTML = '';
+      entries.forEach((entry, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
           <td data-label="Name">${entry.name}</td>
           <td data-label="Email">${entry.email}</td>
           <td data-label="Course">${entry.course}</td>
@@ -311,81 +334,101 @@
           <td data-label="Date">${entry.date}</td>
           <td data-label="Actions"><button onclick="showDeleteConfirmation(${index})">Delete</button></td>
         `;
-                entryTable.appendChild(row);
-            });
-        }
+        entryTable.appendChild(row);
+      });
+    }
 
-        function showDeleteConfirmation(index) {
-            entryToDelete = index;
-            deleteConfirmModal.style.display = 'block';
-        }
+    function showDeleteConfirmation(index) {
+      entryToDelete = index;
+      deleteConfirmModal.style.display = 'block';
+    }
 
-        btnCancelDelete.addEventListener('click', () => {
-            deleteConfirmModal.style.display = 'none';
-            deletePasscodeInput.value = '';
-        });
+    btnCancelDelete.addEventListener('click', () => {
+      deleteConfirmModal.style.display = 'none';
+      deletePasscodeInput.value = '';
+    });
 
-        btnConfirmDelete.addEventListener('click', () => {
-            const passcode = deletePasscodeInput.value;
-            if (passcode !== '0919') {
-                showModal("❌ Incorrect passcode.", "Deletion cancelled.");
-                return;
-            }
-            entries.splice(entryToDelete, 1);
-            saveEntries();
-            renderTable();
-            deleteConfirmModal.style.display = 'none';
-            deletePasscodeInput.value = '';
-            showModal("✅ Success!", "Entry deleted.");
-        });
+    btnConfirmDelete.addEventListener('click', () => {
+      const passcode = deletePasscodeInput.value;
+      if (passcode !== '0919') {
+        showModal("❌ Incorrect passcode.", "Deletion cancelled.");
+        return;
+      }
+      entries.splice(entryToDelete, 1);
+      saveEntries();
+      renderTable();
+      deleteConfirmModal.style.display = 'none';
+      deletePasscodeInput.value = '';
+      showModal("✅ Success!", "Entry deleted.");
+    });
 
-        function showModal(header, message) {
-            modalHeader.innerText = header;
-            modalMessage.innerText = message;
-            modalAlert.style.display = 'block';
+    function showModal(header, message) {
+      modalHeader.innerText = header;
+      modalMessage.innerText = message;
+      modalAlert.style.display = 'block';
 
-            btnModalOk.addEventListener('click', () => {
-                modalAlert.style.display = 'none';
-            });
-        }
+      btnModalOk.addEventListener('click', () => {
+        modalAlert.style.display = 'none';
+      });
+    }
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const newEntry = {
-                name: form.name.value,
-                email: form.email.value,
-                course: form.course.value,
-                position: form.position.value,
-                shirt: form.shirt.value,
-                size: form.size.value,
-                mode: form.mode.value,
-                amount: form.amountPaid.value,
-                date: form.datePaid.value
-            };
-            entries.push(newEntry);
-            saveEntries();
-            form.reset();
-            showModal("✅ Entry added!", "Participant successfully added.");
-        });
+    function showEntryPasscodeModal() {
+      entryPasscodeModal.style.display = 'block';
+    }
 
-        function exportToExcel() {
-            const data = entries.map(e => ({
-                Name: e.name,
-                Email: e.email,
-                Course: e.course,
-                Position: e.position,
-                Shirt: e.shirt,
-                Size: e.size,
-                Mode: e.mode,
-                Amount: e.amount,
-                Date: e.date
-            }));
-            const ws = XLSX.utils.json_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Participants");
-            XLSX.writeFile(wb, "BLS_Participants.xlsx");
-        }
-    </script>
+    btnCancelEntry.addEventListener('click', () => {
+      entryPasscodeModal.style.display = 'none';
+      entryPasscodeInput.value = '';
+    });
+
+    btnSubmitEntry.addEventListener('click', () => {
+      const passcode = entryPasscodeInput.value;
+      if (passcode !== '0920') {
+        showModal("❌ Incorrect passcode.", "Entry submission cancelled.");
+        return;
+      }
+
+      const newEntry = {
+        name: form.name.value,
+        email: form.email.value,
+        course: form.course.value,
+        position: form.position.value,
+        shirt: form.shirt.value,
+        size: form.size.value,
+        mode: form.mode.value,
+        amount: form.amountPaid.value,
+        date: form.datePaid.value
+      };
+
+      entries.push(newEntry);
+      saveEntries();
+      form.reset();
+      entryPasscodeModal.style.display = 'none';
+      showModal("✅ Entry added!", "Participant successfully added.");
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      showEntryPasscodeModal();
+    });
+
+    function exportToExcel() {
+      const data = entries.map(e => ({
+        Name: e.name,
+        Email: e.email,
+        Course: e.course,
+        Position: e.position,
+        Shirt: e.shirt,
+        Size: e.size,
+        Mode: e.mode,
+        Amount: e.amount,
+        Date: e.date
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Participants");
+      XLSX.writeFile(wb, "BLS_Participants.xlsx");
+    }
+  </script>
 </body>
-
 </html>
