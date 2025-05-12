@@ -1,173 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>BLS Payment Manager</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 15px;
-      background: #f2f2f2;
-    }
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-    .btn-toggle {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px 0;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    form, .list-container {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-top: 10px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    button[type="submit"] {
-      background-color: #28a745;
-      color: white;
-      font-weight: bold;
-    }
-    button[type="submit"]:hover {
-      background-color: #218838;
-    }
 
-    table {
-      width: 100%;
-      margin-top: 10px;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    th, td {
-      border-bottom: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #f4f4f4;
-    }
-    .actions button {
-      background-color: #dc3545;
-      color: white;
-      padding: 5px 8px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    @media (max-width: 600px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      tr {
-        margin-bottom: 10px;
-        background: #fff;
-        border-radius: 10px;
-        padding: 10px;
-      }
-      td {
-        text-align: left;
-        position: relative;
-        padding-left: 50%;
-      }
-      td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        width: 45%;
-        font-weight: bold;
-      }
-    }
-  </style>
+<head>
+    <meta charset="UTF-8">
+    <title>BLS Payment Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 15px;
+            background: #f2f2f2;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .btn-toggle {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        form,
+        .list-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .actions button {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            tr {
+                margin-bottom: 10px;
+                background: #fff;
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            td {
+                text-align: left;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                font-weight: bold;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            margin: 5% auto;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            text-align: right;
+        }
+
+        .btn-modal {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+        }
+
+        .btn-modal:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
+
 <body>
 
-  <h2>RCY BLS Payment Manager</h2>
-  <button class="btn-toggle" onclick="toggleView('list')">📋 View Participants</button>
+    <h2>RCY BLS Payment Manager</h2>
+    <button class="btn-toggle" onclick="toggleView('list')">📋 View Participants</button>
 
-  <form id="blsForm">
-    <input type="text" id="name" placeholder="Full Name" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="text" id="course" placeholder="Department & Course" required />
-    <input type="text" id="position" placeholder="Council Position" required />
-    <select id="shirt">
-      <option value="Yes">Wants Shirt (₱380)</option>
-      <option value="No">No Shirt</option>
-    </select>
-    <select id="size">
-      <option>XS</option><option>S</option><option>M</option>
-      <option>L</option><option>XL</option><option>XXL</option>
-      <option>Will Not Inquire</option>
-    </select>
-    <select id="mode">
-      <option>GCASH</option>
-      <option>Cash (ERL RAMAS)</option>
-      <option>Cash (KYLA LAMBERTO)</option>
-    </select>
-    <input type="number" id="amountPaid" placeholder="Amount Paid" />
-    <input type="date" id="datePaid" />
-    <button type="submit">Add Entry</button>
-  </form>
+    <form id="blsForm">
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="text" id="course" placeholder="Department & Course" required />
+        <input type="text" id="position" placeholder="Council Position" required />
+        <select id="shirt">
+            <option value="Yes">Wants Shirt (₱380)</option>
+            <option value="No">No Shirt</option>
+        </select>
+        <select id="size">
+            <option>XS</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+            <option>XXL</option>
+            <option>Will Not Inquire</option>
+        </select>
+        <select id="mode">
+            <option>GCASH</option>
+            <option>Cash (ERL RAMAS)</option>
+            <option>Cash (KYLA LAMBERTO)</option>
+        </select>
+        <input type="number" id="amountPaid" placeholder="Amount Paid" />
+        <input type="date" id="datePaid" />
+        <button type="submit">Add Entry</button>
+    </form>
 
-  <div class="list-container" id="listContainer" style="display:none;">
-    <button class="btn-toggle" onclick="toggleView('form')">🔙 Back to Entry Form</button>
-    <button class="btn-toggle" onclick="exportToExcel()">📤 Export to Excel</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th><th>Email</th><th>Course</th><th>Shirt</th><th>Size</th>
-          <th>Mode</th><th>Amount</th><th>Date</th><th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="entryTable"></tbody>
-    </table>
-  </div>
+    <div class="list-container" id="listContainer" style="display:none;">
+        <button class="btn-toggle" onclick="toggleView('form')">🔙 Back to Entry Form</button>
+        <button class="btn-toggle" onclick="exportToExcel()">📤 Export to Excel</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Shirt</th>
+                    <th>Size</th>
+                    <th>Mode</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="entryTable"></tbody>
+        </table>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Modal for Delete Confirmation -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">Confirm Deletion</div>
+            <div class="modal-body">
+                <p>Please enter the passcode to confirm deletion:</p>
+                <input type="password" id="deletePasscode" placeholder="Enter passcode" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal" id="btnConfirmDelete">Confirm</button>
+                <button class="btn-cancel" id="btnCancelDelete">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal for Alerts -->
+    <div id="modalAlert" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-body" id="modalMessage"></div>
+            <div class="modal-footer">
+                <button class="btn-modal" id="btnModalOk">OK</button>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    const form = document.getElementById('blsForm');
-    const listContainer = document.getElementById('listContainer');
-    const entryTable = document.getElementById('entryTable');
-    let entries = JSON.parse(localStorage.getItem('blsEntries')) || [];
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        const form = document.getElementById('blsForm');
+        const listContainer = document.getElementById('listContainer');
+        const entryTable = document.getElementById('entryTable');
+        let entries = JSON.parse(localStorage.getItem('blsEntries')) || [];
 
-    function toggleView(view) {
-      if (view === 'list') {
-        form.style.display = 'none';
-        listContainer.style.display = 'block';
-        renderTable();
-      } else {
-        form.style.display = 'block';
-        listContainer.style.display = 'none';
-      }
-    }
+        const modalAlert = document.getElementById('modalAlert');
+        const modalHeader = document.getElementById('modalHeader');
+        const modalMessage = document.getElementById('modalMessage');
+        const btnModalOk = document.getElementById('btnModalOk');
 
-    function saveEntries() {
-      localStorage.setItem('blsEntries', JSON.stringify(entries));
-    }
+        // Delete Confirmation Modal
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        const deletePasscodeInput = document.getElementById('deletePasscode');
+        const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+        const btnCancelDelete = document.getElementById('btnCancelDelete');
 
-    function renderTable() {
-      entryTable.innerHTML = '';
-      entries.forEach((entry, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+        let entryToDelete = null;
+
+        function toggleView(view) {
+            if (view === 'list') {
+                form.style.display = 'none';
+                listContainer.style.display = 'block';
+                renderTable();
+            } else {
+                form.style.display = 'block';
+                listContainer.style.display = 'none';
+            }
+        }
+
+        function saveEntries() {
+            localStorage.setItem('blsEntries', JSON.stringify(entries));
+        }
+
+        function renderTable() {
+            entryTable.innerHTML = '';
+            entries.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
           <td data-label="Name">${entry.name}</td>
           <td data-label="Email">${entry.email}</td>
           <td data-label="Course">${entry.course}</td>
@@ -176,59 +309,83 @@
           <td data-label="Mode">${entry.mode}</td>
           <td data-label="Amount">₱${entry.amount}</td>
           <td data-label="Date">${entry.date}</td>
-          <td data-label="Actions"><button onclick="deleteEntry(${index})">Delete</button></td>
+          <td data-label="Actions"><button onclick="showDeleteConfirmation(${index})">Delete</button></td>
         `;
-        entryTable.appendChild(row);
-      });
-    }
+                entryTable.appendChild(row);
+            });
+        }
 
-    function deleteEntry(index) {
-      if (confirm("Delete this entry?")) {
-        entries.splice(index, 1);
-        saveEntries();
-        renderTable();
-      }
-    }
+        function showDeleteConfirmation(index) {
+            entryToDelete = index;
+            deleteConfirmModal.style.display = 'block';
+        }
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const newEntry = {
-        name: form.name.value,
-        email: form.email.value,
-        course: form.course.value,
-        position: form.position.value,
-        shirt: form.shirt.value,
-        size: form.size.value,
-        mode: form.mode.value,
-        amount: form.amountPaid.value,
-        date: form.datePaid.value
-      };
-      entries.push(newEntry);
-      saveEntries();
-      form.reset();
-      alert("Entry added successfully!");
-    });
+        btnCancelDelete.addEventListener('click', () => {
+            deleteConfirmModal.style.display = 'none';
+            deletePasscodeInput.value = '';
+        });
 
-    function exportToExcel() {
-      const data = entries.map(e => ({
-        Name: e.name,
-        Email: e.email,
-        Course: e.course,
-        Position: e.position,
-        Shirt: e.shirt,
-        Size: e.size,
-        Mode: e.mode,
-        Amount: e.amount,
-        Date: e.date
-      }));
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Participants");
-      XLSX.writeFile(wb, "BLS_Participants.xlsx");
-    }
-  </script>
+        btnConfirmDelete.addEventListener('click', () => {
+            const passcode = deletePasscodeInput.value;
+            if (passcode !== '0919') {
+                showModal("❌ Incorrect passcode.", "Deletion cancelled.");
+                return;
+            }
+            entries.splice(entryToDelete, 1);
+            saveEntries();
+            renderTable();
+            deleteConfirmModal.style.display = 'none';
+            deletePasscodeInput.value = '';
+            showModal("✅ Success!", "Entry deleted.");
+        });
+
+        function showModal(header, message) {
+            modalHeader.innerText = header;
+            modalMessage.innerText = message;
+            modalAlert.style.display = 'block';
+
+            btnModalOk.addEventListener('click', () => {
+                modalAlert.style.display = 'none';
+            });
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const newEntry = {
+                name: form.name.value,
+                email: form.email.value,
+                course: form.course.value,
+                position: form.position.value,
+                shirt: form.shirt.value,
+                size: form.size.value,
+                mode: form.mode.value,
+                amount: form.amountPaid.value,
+                date: form.datePaid.value
+            };
+            entries.push(newEntry);
+            saveEntries();
+            form.reset();
+            showModal("✅ Entry added!", "Participant successfully added.");
+        });
+
+        function exportToExcel() {
+            const data = entries.map(e => ({
+                Name: e.name,
+                Email: e.email,
+                Course: e.course,
+                Position: e.position,
+                Shirt: e.shirt,
+                Size: e.size,
+                Mode: e.mode,
+                Amount: e.amount,
+                Date: e.date
+            }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Participants");
+            XLSX.writeFile(wb, "BLS_Participants.xlsx");
+        }
+    </script>
 </body>
-  <footer style="text-align:center; padding: 15px; font-size: 14px; color: #777;">
-  &copy; 2025 Erl Jay Ramas / BSIT 3A
-</footer>
+
 </html>
