@@ -127,8 +127,8 @@
   </form>
 
   <div class="list-container" id="listContainer" style="display:none;">
-    <button class="btn-toggle" onclick="exportToExcel()">📤 Export to Excel</button>
     <button class="btn-toggle" onclick="toggleView('form')">🔙 Back to Entry Form</button>
+    <button class="btn-toggle" onclick="exportToExcel()">📤 Export to Excel</button>
     <table>
       <thead>
         <tr>
@@ -139,31 +139,15 @@
       <tbody id="entryTable"></tbody>
     </table>
   </div>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/xlsx.mini.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
   <script>
     const form = document.getElementById('blsForm');
     const listContainer = document.getElementById('listContainer');
     const entryTable = document.getElementById('entryTable');
     let entries = JSON.parse(localStorage.getItem('blsEntries')) || [];
-    
-     function exportToExcel() {
-    const data = entries.map(e => ({
-      Name: e.name,
-      Email: e.email,
-      Course: e.course,
-      Position: e.position,
-      Shirt: e.shirt,
-      Size: e.size,
-      Mode: e.mode,
-      Amount: e.amount,
-      Date: e.date
-    }));
 
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Participants");
-    XLSX.writeFile(wb, "BLS_Participants.xlsx");
-  }
     function toggleView(view) {
       if (view === 'list') {
         form.style.display = 'none';
@@ -224,6 +208,24 @@
       form.reset();
       alert("Entry added successfully!");
     });
+
+    function exportToExcel() {
+      const data = entries.map(e => ({
+        Name: e.name,
+        Email: e.email,
+        Course: e.course,
+        Position: e.position,
+        Shirt: e.shirt,
+        Size: e.size,
+        Mode: e.mode,
+        Amount: e.amount,
+        Date: e.date
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Participants");
+      XLSX.writeFile(wb, "BLS_Participants.xlsx");
+    }
   </script>
 </body>
 </html>
